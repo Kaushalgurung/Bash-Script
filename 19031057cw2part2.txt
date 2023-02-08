@@ -1,0 +1,175 @@
+#!/bin/bash
+if [[ $# != 2 ]];
+    then
+    echo -e "Error! User-name or ID Missing"
+    echo -e "Please enter both User-name and ID and execute the file"
+    exit
+fi
+
+if ! [[ "$2" =~ ^[+-]?[0-9]+$ ]]; then
+    echo -e "Error! Enter User-name as string and ID as number."
+    exit
+fi
+
+username=$1
+id=$2
+if [[ "$1" != "kaushalgurung" ]];
+    then
+    echo -e "Error! User-name incorrect!"
+    echo -e "Please enter correct User-name!"
+    exit
+fi
+if [[ "$2" != "19031057" ]]; 
+    then
+    echo -e "Error! Incorrect ID!"
+    echo -e "Please enter correct ID!"
+    exit
+fi
+echo -e "-------------------------------------------------------------------------------------------------------------------------------------"
+toilet -f mono12 -F metal Welcome 
+echo -e "Enter password-"
+password=password
+count=0
+until [[ "$key" = "$password" ]]; do
+    if [[ count -lt 4 ]]; then
+        if [[ count -gt 0 ]]; then
+            echo -e "\t\t\t-Error! incorrect password. Attempt no: $count"
+        fi
+        echo -e "Password: \c"
+        read key
+        count=`expr $count + 1`
+        else
+            echo -e "\t\t-Error! Login attempt exceeded"
+            echo -e "\n-Program has been terminated-\n"
+            exit
+        fi
+done
+
+echo -e "\t\t\t#####-Login successful-##### \n"
+echo -e "ID: $id \t\t\t\t\t Username: $username"
+echo -e "Date accessed: \c \n"
+date +%D
+echo -e "Accessed time: \c"
+date +%T
+echo -e "---------------------------------------------------------------------------------------------------"
+echo -e "\t"
+# Choosing the country.
+country(){
+    echo -e "\n \t Select a country"
+    echo -e "*========================================*"
+    echo -e "(|    COUNTRY         ||     CODE       |)"
+    echo -e "*========================================*"
+    echo -e "(|    Brazil          ||      BRZ       |)"
+    echo -e "(|    Argentina       ||      ARG       |)"
+    echo -e "(|    Nepal           ||      NEP       |)"
+    echo -e "(|    China           ||      CHI       |)"
+    echo -e "(|    England         ||      ENG       |)"
+    echo -e "*========================================*"
+    echo -e "\n -Which country do you support? \c"
+    read cou
+    if [[ "$cou" = "NEP" ]]; then
+        echo -e "---------------------------------------------------------------------------------------------"
+        echo -e "\n \t\t\t Nepal"
+        echo -e "  The Nepal national football team represents Nepal in International"
+        echo -e "  men's footbal, and is governed by the All Nepal Football Association"
+        echo -e "  (ANFA). A menber of the Asian Football Confederation (AFC), the Nepalese"
+        echo -e "  football team plays their home games at Dashrath Rangasala Stadium in Kathmandu."
+        echo -e "---------------------------------------------------------------------------------------------" 
+    elif [[ "$cou" = "BRZ" || "$cou" = "ARG" || "$cou" = "CHI" || "$cou" = "ENG" ]]; then
+        echo -e "-Error! Wrong Country!"
+        echo -e " -You are not a true patriot!!"
+        country
+    else
+        echo -e "\n Error! Invalid Country code!"
+        echo -e "\n Please enter country code form above table."
+        country
+    fi
+}
+# Checking if the entered value is present in the table.
+value(){
+    if [[ $1 != "LM" && $1 != "NJ" && $1 != "KC" && $1 != "ZZ" && $1 != "HK" ]]; then
+        echo -e "\n Error! Player doesn't exist in the table!"
+        echo -e "-Choose the player only from the table."
+        player_choose
+        echo -e " "
+    fi
+}
+# Validation of the no. of player entered and checking duplicate entry.
+validation(){
+    if [[ $# != 3 ]]; then
+        echo -e "\n Error! Invalid no. of players input."
+        echo -e "-Limit 3 player code."
+        player_choose
+    fi
+    if [[ $1 = $2 || $2 = $3 || $3 = $1 ]]; then
+        echo -e "\n Error! Duplicate code entered!"
+        echo -e "-Please enter a player's code only once:"
+        player_choose
+    fi
+}
+# Choosing the players for getting the information.
+player_choose(){
+    P1=P1
+    P2=P2
+    P3=P3
+    echo -e "\n \t Player"
+    echo -e "*=====================================*"
+    echo -e "|       PLAYER       ||      CODE     |"
+    echo -e "*=====================================*"
+    echo -e "|    Lional Messi    ||       LM      |"
+    echo -e "|    Neymar Junior   ||       NJ      |"
+    echo -e "|    Kiran Chemjong  ||       KC      |"
+    echo -e "|    Zheng Zhi       ||       ZZ      |"
+    echo -e "|    Harry Kane      ||       HK      |"
+    echo -e "*=====================================*"
+    echo -e " "
+    echo -e "-Choose any 3 Players seperate each player code by space:"
+    read P1 P2 P3
+    validation $P1 $P2 $P3
+    echo -e " "
+    value "$P1"
+    value "$P2"
+    value "$P3"
+    echo -e "-------------------------------------------------------------------------------------------------"
+}
+# Information of the Player.
+information(){
+    echo -e " "
+    PS3="-- Choose any one no. from above which you want the information on: "
+    select player in $P1 $P2 $P3
+    do
+        if [ -z $player ]
+            then
+                echo -e "\n Error! Invalid Input. "
+        elif [ -r $player ]
+            then
+                echo -e " "
+                echo -e " Information of $player : "
+                echo -e " "
+                cat $player
+                break
+            else
+                echo -e "\n Error! Cannot find information on $player !"
+        fi
+    done
+}
+
+continueprogram(){
+    country
+    player_choose
+    information
+    echo -e "\n Do you wish to continue the program? [y/n]: \c"
+    read y
+    case $y in "yes"|"YES"|"Yes"|"YEs"|"yES"|"yeS"|"y"|"Y")
+        continueprogram
+        ;;
+        *)
+        echo -e " "
+        echo -e "-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*"
+        echo -e "-Program has been terminated!"
+        echo -e "-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*"
+        exit
+        ;;
+    esac
+}
+continueprogram;
